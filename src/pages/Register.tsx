@@ -82,7 +82,7 @@ const Register = () => {
       if (data.user) {
         // Update profile in the database
         const { error: updateError } = await supabase
-          .from("profiles")
+          .from('profiles')
           .update({ 
             username: values.username,
             role: values.role 

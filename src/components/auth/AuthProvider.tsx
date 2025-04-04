@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useUser } from "@/context/UserContext";
 import { Session, User } from "@supabase/supabase-js";
+import { Database } from "@/integrations/supabase/types";
 
 interface AuthContextType {
   session: Session | null;
@@ -31,7 +32,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           setTimeout(async () => {
             try {
               const { data: profileData } = await supabase
-                .from("profiles")
+                .from('profiles')
                 .select("role, username")
                 .eq("id", currentSession.user.id)
                 .single();
@@ -60,7 +61,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       if (currentSession?.user) {
         // Get user profile data to set role
         supabase
-          .from("profiles")
+          .from('profiles')
           .select("role, username")
           .eq("id", currentSession.user.id)
           .single()
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
             setLoading(false);
           })
-          .catch(error => {
+          .catch((error) => {
             console.error("Error fetching user profile:", error);
             setLoading(false);
           });

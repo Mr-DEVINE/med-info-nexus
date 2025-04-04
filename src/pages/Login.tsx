@@ -58,7 +58,7 @@ const Login = () => {
       if (data.user) {
         // Fetch user profile to get role
         const { data: profileData, error: profileError } = await supabase
-          .from("profiles")
+          .from('profiles')
           .select("role, username")
           .eq("id", data.user.id)
           .single();
@@ -71,8 +71,10 @@ const Login = () => {
 
         // Update context with user information
         setIsAuthenticated(true);
-        setRole(profileData.role as any);
-        setUsername(profileData.username || values.email);
+        if (profileData) {
+          setRole(profileData.role as any);
+          setUsername(profileData.username || values.email);
+        }
         
         toast.success("Login successful!");
         navigate("/dashboard");
