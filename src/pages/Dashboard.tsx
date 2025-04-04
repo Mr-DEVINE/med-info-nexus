@@ -5,7 +5,7 @@ import Layout from "@/components/layout/Layout";
 import { useUser } from "@/context/UserContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Doctor, User, FileText, BookOpen, Hospital, Flask, TrendingUp, Users, Clock, Bell } from "lucide-react";
+import { Stethoscope, User, FileText, BookOpen, Heart, Pill, TrendingUp, Users, Clock, Bell } from "lucide-react";
 
 const Dashboard = () => {
   const { role, isAuthenticated, username } = useUser();
@@ -20,7 +20,7 @@ const Dashboard = () => {
   const getUserIcon = () => {
     switch (role) {
       case "doctor":
-        return <Doctor className="w-12 h-12 text-medicare-blue" />;
+        return <Stethoscope className="w-12 h-12 text-medicare-blue" />;
       case "patient":
         return <User className="w-12 h-12 text-green-600" />;
       case "researcher":
@@ -28,9 +28,9 @@ const Dashboard = () => {
       case "student":
         return <BookOpen className="w-12 h-12 text-yellow-600" />;
       case "bloodbank":
-        return <Hospital className="w-12 h-12 text-red-600" />;
+        return <Heart className="w-12 h-12 text-red-600" />;
       case "pharmaceutical":
-        return <Flask className="w-12 h-12 text-indigo-600" />;
+        return <Pill className="w-12 h-12 text-indigo-600" />;
       default:
         return <User className="w-12 h-12 text-gray-600" />;
     }

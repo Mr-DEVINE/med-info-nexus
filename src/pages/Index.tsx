@@ -6,7 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Layout from "@/components/layout/Layout";
 import { useUser } from "@/context/UserContext";
 import { toast } from "@/hooks/use-toast";
-import { Doctor, User, Flask, BookOpen, Hospital, FileText } from "lucide-react";
+import { Stethoscope, User, FileText, BookOpen, Heart, Pill } from "lucide-react";
 
 const Index = () => {
   const { setRole, setIsAuthenticated, setUsername } = useUser();
@@ -14,12 +14,12 @@ const Index = () => {
   const [selectedRole, setSelectedRole] = useState<string | null>(null);
   
   const roles = [
-    { id: "doctor", name: "Doctor", icon: Doctor, color: "bg-blue-100 text-blue-600" },
+    { id: "doctor", name: "Doctor", icon: Stethoscope, color: "bg-blue-100 text-blue-600" },
     { id: "patient", name: "Patient", icon: User, color: "bg-green-100 text-green-600" },
     { id: "researcher", name: "Researcher", icon: FileText, color: "bg-purple-100 text-purple-600" },
     { id: "student", name: "Student", icon: BookOpen, color: "bg-yellow-100 text-yellow-600" },
-    { id: "bloodbank", name: "Blood Bank", icon: Hospital, color: "bg-red-100 text-red-600" },
-    { id: "pharmaceutical", name: "Pharmaceutical", icon: Flask, color: "bg-indigo-100 text-indigo-600" }
+    { id: "bloodbank", name: "Blood Bank", icon: Heart, color: "bg-red-100 text-red-600" },
+    { id: "pharmaceutical", name: "Pharmaceutical", icon: Pill, color: "bg-indigo-100 text-indigo-600" }
   ];
   
   const handleContinue = () => {
