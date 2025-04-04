@@ -9,6 +9,9 @@ import Index from "./pages/Index";
 import Dashboard from "./pages/Dashboard";
 import Feed from "./pages/Feed";
 import NotFound from "./pages/NotFound";
+import Appointments from "./pages/Appointments";
+import BloodBank from "./pages/BloodBank";
+import Pharmacy from "./pages/Pharmacy";
 
 const queryClient = new QueryClient();
 
@@ -23,6 +26,9 @@ const App = () => (
             <Route path="/" element={<Index />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/feed" element={<Feed />} />
+            <Route path="/appointments" element={<Appointments />} />
+            <Route path="/bloodbank" element={<BloodBank />} />
+            <Route path="/pharmacy" element={<Pharmacy />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />
           </Routes>

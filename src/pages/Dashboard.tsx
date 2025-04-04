@@ -5,7 +5,11 @@ import Layout from "@/components/layout/Layout";
 import { useUser } from "@/context/UserContext";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Stethoscope, User, FileText, BookOpen, Heart, Pill, TrendingUp, Users, Clock, Bell } from "lucide-react";
+import { 
+  Stethoscope, User, FileText, BookOpen, Heart, Pill, TrendingUp, Users, 
+  Clock, Bell, Calendar, ShoppingCart
+} from "lucide-react";
+import { Link } from "react-router-dom";
 
 const Dashboard = () => {
   const { role, isAuthenticated, username } = useUser();
@@ -57,6 +61,55 @@ const Dashboard = () => {
               Go to Feed
             </Button>
           </div>
+
+          {role === "patient" && (
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 animate-fade-in">
+              <Card className="hover:shadow-md transition-all duration-300 border-l-4 border-l-medicare-blue">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <Calendar className="h-5 w-5 text-medicare-blue" />
+                    Appointments
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">Schedule appointments with doctors</p>
+                  <Link to="/appointments">
+                    <Button className="w-full bg-medicare-blue hover:bg-medicare-dark">Book Appointment</Button>
+                  </Link>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-all duration-300 border-l-4 border-l-red-500">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <Heart className="h-5 w-5 text-red-500" />
+                    Blood Bank
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">Purchase blood products for medical needs</p>
+                  <Link to="/bloodbank">
+                    <Button className="w-full bg-red-500 hover:bg-red-600">Visit Blood Bank</Button>
+                  </Link>
+                </CardContent>
+              </Card>
+              
+              <Card className="hover:shadow-md transition-all duration-300 border-l-4 border-l-medicare-teal">
+                <CardHeader className="pb-3">
+                  <CardTitle className="flex items-center gap-2">
+                    <Pill className="h-5 w-5 text-medicare-teal" />
+                    Pharmacy
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-sm text-muted-foreground mb-4">Purchase medications and prescriptions</p>
+                  <Link to="/pharmacy">
+                    <Button className="w-full bg-medicare-teal hover:bg-teal-600">Visit Pharmacy</Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </div>
+          )}
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
             <Card>
@@ -150,12 +203,12 @@ const Dashboard = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Connect with Peers</CardTitle>
-                <CardDescription>Collaborate with other medical professionals</CardDescription>
+                <CardTitle>Manage Appointments</CardTitle>
+                <CardDescription>View and manage your upcoming patient appointments</CardDescription>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full">
-                  <Users className="mr-2 h-4 w-4" /> Find Colleagues
+                  <Calendar className="mr-2 h-4 w-4" /> View Schedule
                 </Button>
               </CardContent>
             </Card>
@@ -232,12 +285,12 @@ const Dashboard = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Connect with Hospitals</CardTitle>
-                <CardDescription>Establish connections with healthcare providers</CardDescription>
+                <CardTitle>Manage Inventory</CardTitle>
+                <CardDescription>Track and update your blood product inventory</CardDescription>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full">
-                  Find Hospitals
+                  <ShoppingCart className="mr-2 h-4 w-4" /> View Inventory
                 </Button>
               </CardContent>
             </Card>
@@ -259,12 +312,12 @@ const Dashboard = () => {
             </Card>
             <Card>
               <CardHeader>
-                <CardTitle>Connect with Providers</CardTitle>
-                <CardDescription>Establish connections with healthcare providers</CardDescription>
+                <CardTitle>Manage Products</CardTitle>
+                <CardDescription>Update your product catalog and availability</CardDescription>
               </CardHeader>
               <CardContent>
                 <Button variant="outline" className="w-full">
-                  Find Providers
+                  <Pill className="mr-2 h-4 w-4" /> View Products
                 </Button>
               </CardContent>
             </Card>

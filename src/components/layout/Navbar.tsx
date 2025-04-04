@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/context/UserContext";
-import { User, LogOut } from "lucide-react";
+import { User, LogOut, Calendar, Heart, Pill } from "lucide-react";
 
 const Navbar = () => {
   const { role, isAuthenticated, username, setIsAuthenticated, setRole } = useUser();
@@ -29,6 +29,19 @@ const Navbar = () => {
                 <Link to="/feed" className="text-gray-600 hover:text-medicare-blue transition-colors">
                   Feed
                 </Link>
+                {role === "patient" && (
+                  <>
+                    <Link to="/appointments" className="text-gray-600 hover:text-medicare-blue transition-colors flex items-center gap-1">
+                      <Calendar size={16} /> Appointments
+                    </Link>
+                    <Link to="/bloodbank" className="text-gray-600 hover:text-medicare-blue transition-colors flex items-center gap-1">
+                      <Heart size={16} /> Blood Bank
+                    </Link>
+                    <Link to="/pharmacy" className="text-gray-600 hover:text-medicare-blue transition-colors flex items-center gap-1">
+                      <Pill size={16} /> Pharmacy
+                    </Link>
+                  </>
+                )}
                 <Link to="/profile" className="text-gray-600 hover:text-medicare-blue transition-colors">
                   Profile
                 </Link>
