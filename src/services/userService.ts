@@ -29,6 +29,12 @@ export const fetchAllUsers = async (): Promise<UserProfile[]> => {
       throw authError;
     }
 
+    // Ensure authUsers.users exists and is an array
+    if (!authUsers?.users || !Array.isArray(authUsers.users)) {
+      console.error("Auth users data is not in expected format:", authUsers);
+      return [];
+    }
+
     // Combine the data
     const users = profiles.map(profile => {
       const authUser = authUsers.users.find(u => u.id === profile.id);
