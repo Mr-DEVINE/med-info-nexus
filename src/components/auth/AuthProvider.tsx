@@ -72,7 +72,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
             setLoading(false);
           })
-          .catch((error: any) => { // Fixed the TypeScript error by adding explicit type
+          .catch((error) => { 
             console.error("Error fetching user profile:", error);
             setLoading(false);
           });
