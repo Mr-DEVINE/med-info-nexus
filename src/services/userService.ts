@@ -9,6 +9,14 @@ export interface UserProfile {
   email: string;
   role: UserRole;
   created_at: string;
+  full_name?: string | null;
+  specialty?: string | null;
+  bio?: string | null;
+  blood_type?: string | null;
+  date_of_birth?: string | null;
+  phone_number?: string | null;
+  address?: string | null;
+  emergency_contact?: string | null;
 }
 
 export const fetchAllUsers = async (): Promise<UserProfile[]> => {
@@ -43,7 +51,10 @@ export const fetchAllUsers = async (): Promise<UserProfile[]> => {
         username: profile.username,
         email: authUser?.email || 'Unknown',
         role: profile.role as UserRole,
-        created_at: profile.created_at
+        created_at: profile.created_at,
+        full_name: profile.full_name,
+        specialty: profile.specialty,
+        bio: profile.bio
       };
     });
 
@@ -90,5 +101,116 @@ export const deleteUser = async (userId: string): Promise<boolean> => {
     console.error("Error deleting user:", error);
     toast.error("Failed to delete user");
     return false;
+  }
+};
+
+export const updateUserProfile = async (
+  userId: string, 
+  profileData: Partial<Omit<UserProfile, 'id' | 'email' | 'role' | 'created_at'>>
+): Promise<boolean> => {
+  try {
+    const { error } = await supabase
+      .from('profiles')
+      .update(profileData)
+      .eq("id", userId);
+
+    if (error) {
+      throw error;
+    }
+
+    toast.success("Profile updated successfully");
+    return true;
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    toast.error("Failed to update profile");
+    return false;
+  }
+};
+
+export const fetchUserProfile = async (userId: string): Promise<UserProfile | null> => {
+  try {
+    // Get profile data
+    const { data: profile, error: profileError } = await supabase
+      .from('profiles')
+      .select('*')
+      .eq('id', userId)
+      .single();
+
+    if (profileError) {
+      throw profileError;
+    }
+
+    // Get auth user data for email
+    const { data: authUser, error: authError } = await supabase.auth.admin.getUserById(userId);
+
+    if (authError) {
+      throw authError;
+    }
+
+    if (!profile || !authUser.user) {
+      return null;
+    }
+
+    return {
+      id: profile.id,
+      username: profile.username,
+      email: authUser.user.email || 'Unknown',
+      role: profile.role as UserRole,
+      created_at: profile.created_at,
+      full_name: profile.full_name,
+      specialty: profile.specialty,
+      bio: profile.bio,
+      blood_type: profile.blood_type,
+      date_of_birth: profile.date_of_birth,
+      phone_number: profile.phone_number,
+      address: profile.address,
+      emergency_contact: profile.emergency_contact
+    };
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    toast.error("Failed to fetch user profile");
+    return null;
+  }
+};
+
+export const searchUsers = async (
+  query: string, 
+  role?: UserRole
+): Promise<UserProfile[]> => {
+  try {
+    let dbQuery = supabase
+      .from('profiles')
+      .select('*');
+    
+    // Add filter by role if specified
+    if (role) {
+      dbQuery = dbQuery.eq('role', role);
+    }
+    
+    // Add search query
+    dbQuery = dbQuery.or(`username.ilike.%${query}%,full_name.ilike.%${query}%`);
+    
+    const { data: profiles, error } = await dbQuery;
+
+    if (error) {
+      throw error;
+    }
+
+    // We can't join with auth to get emails here due to security restrictions,
+    // so we'll return partial profiles
+    return profiles.map(profile => ({
+      id: profile.id,
+      username: profile.username,
+      email: '', // We don't have this without extra auth calls
+      role: profile.role as UserRole,
+      created_at: profile.created_at,
+      full_name: profile.full_name,
+      specialty: profile.specialty,
+      bio: profile.bio
+    }));
+  } catch (error) {
+    console.error("Error searching users:", error);
+    toast.error("Failed to search users");
+    return [];
   }
 };
