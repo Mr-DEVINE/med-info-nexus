@@ -5,9 +5,10 @@ import { useUser } from "@/context/UserContext";
 interface RequireAuthProps {
   children: React.ReactNode;
   allowedRoles?: string[];
+  adminOnly?: boolean;
 }
 
-const RequireAuth = ({ children, allowedRoles }: RequireAuthProps) => {
+const RequireAuth = ({ children, allowedRoles, adminOnly = false }: RequireAuthProps) => {
   const { isAuthenticated, role } = useUser();
   const location = useLocation();
 
@@ -16,8 +17,18 @@ const RequireAuth = ({ children, allowedRoles }: RequireAuthProps) => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
+  // Admin can access everything
+  if (role === "admin") {
+    return <>{children}</>;
+  }
+
+  // For admin-only routes, redirect non-admin users
+  if (adminOnly) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
+  // Regular role-based access control
   if (allowedRoles && role && !allowedRoles.includes(role)) {
-    // Redirect to dashboard if authenticated but not authorized
     return <Navigate to="/dashboard" replace />;
   }
 

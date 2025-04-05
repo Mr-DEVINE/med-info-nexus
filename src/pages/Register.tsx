@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
@@ -62,7 +61,6 @@ const Register = () => {
     setErrorMessage(null);
     
     try {
-      // Register the user
       const { data, error } = await supabase.auth.signUp({
         email: values.email,
         password: values.password,
@@ -80,7 +78,6 @@ const Register = () => {
       }
 
       if (data.user) {
-        // Update profile in the database
         const { error: updateError } = await supabase
           .from('profiles')
           .update({ 
@@ -95,7 +92,6 @@ const Register = () => {
           return;
         }
 
-        // Update context with user information
         setIsAuthenticated(true);
         setRole(values.role as UserRole);
         setUsername(values.username);

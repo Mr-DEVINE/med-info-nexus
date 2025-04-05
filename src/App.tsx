@@ -16,6 +16,7 @@ import NotFound from "./pages/NotFound";
 import Appointments from "./pages/Appointments";
 import BloodBank from "./pages/BloodBank";
 import Pharmacy from "./pages/Pharmacy";
+import AdminDashboard from "./pages/AdminDashboard";
 
 const queryClient = new QueryClient();
 
@@ -50,6 +51,10 @@ const App = () => (
               <Route 
                 path="/pharmacy" 
                 element={<RequireAuth allowedRoles={["patient"]}><Pharmacy /></RequireAuth>} 
+              />
+              <Route 
+                path="/admin" 
+                element={<RequireAuth adminOnly={true}><AdminDashboard /></RequireAuth>} 
               />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />

@@ -2,12 +2,14 @@
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { useUser } from "@/context/UserContext";
-import { User, LogOut, Calendar, Heart, Pill } from "lucide-react";
+import { User, LogOut, Calendar, Heart, Pill, Shield } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Navbar = () => {
   const { role, isAuthenticated, username, setIsAuthenticated, setRole } = useUser();
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    await supabase.auth.signOut();
     setIsAuthenticated(false);
     setRole(null);
   };
@@ -29,6 +31,11 @@ const Navbar = () => {
                 <Link to="/feed" className="text-gray-600 hover:text-medicare-blue transition-colors">
                   Feed
                 </Link>
+                {role === "admin" && (
+                  <Link to="/admin" className="text-gray-600 hover:text-medicare-blue transition-colors flex items-center gap-1 font-medium">
+                    <Shield size={16} className="text-purple-600" /> Admin Panel
+                  </Link>
+                )}
                 {role === "patient" && (
                   <>
                     <Link to="/appointments" className="text-gray-600 hover:text-medicare-blue transition-colors flex items-center gap-1">
@@ -49,7 +56,10 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 <Link to="/profile" className="flex items-center gap-2 text-gray-600">
                   <User size={18} />
-                  <span className="hidden md:inline">{username || "User"}</span>
+                  <span className="hidden md:inline">
+                    {username || "User"}
+                    {role === "admin" && <span className="ml-1 text-xs text-purple-600 font-semibold">(Admin)</span>}
+                  </span>
                 </Link>
                 <Button variant="ghost" size="icon" onClick={handleLogout}>
                   <LogOut size={18} />
